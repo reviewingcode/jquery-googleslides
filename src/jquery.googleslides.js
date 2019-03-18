@@ -1,4 +1,13 @@
-﻿// googleslides v1.1 - jQuery Google Slides plugin
+/**
+ * jQuery Google Slides - https://github.com/reviewingcode/jquery-googleslides
+ * Copyright (c) 2019 Mateen Irshad - https://github.com/reviewingcode
+ * License: https://github.com/reviewingcode/jquery-googleslides/blob/master/LICENSE
+ *
+ * Forked from: https://github.com/bradymholt/jquery-googleslides
+ */
+
+/**** Original License and Copyright Notice ****/
+// googleslides v1.1 - jQuery Google Slides plugin
 // (c) 2012 Brady Holt - www.geekytidbits.com
 // License: http://www.opensource.org/licenses/mit-license.php
 
