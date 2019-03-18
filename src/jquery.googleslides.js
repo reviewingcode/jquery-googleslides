@@ -4,9 +4,7 @@
 
 (function($) {
   var defaults = {
-    userid: '115528839112598673902',
-    albumid: '5710317752556741025',
-    authkey: '',
+    url: 'https://photos.app.goo.gl/bjwsrJRXt7qkoHP1A',
     imgmax: 460,
     maxresults: 100,
     random: true,
@@ -19,6 +17,8 @@
   var methods = {
     init: function(options) {
       var settings = $.extend({}, defaults, options);
+      var index = settings.url.lastIndexOf('/');
+      settings.albumid = settings.url.substring(index + 1);
       this.data('googleslidesOptions', settings);
 
       if ($('.googleslides[albumid=' + settings.albumid + ']').length > 0) {
@@ -31,25 +31,12 @@
       } else {
         this.attr('albumid', settings.albumid);
 
-        var authKeyStr = '';
-        if (settings.authkey != '') {
-          authKeyStr = '&authkey=' + settings.authkey;
-        }
-
         var albumJsonUrl =
-          '<script src="https://picasaweb.google.com/data/feed/base/user/' +
-          settings.userid +
-          '/albumid/' +
-          settings.albumid +
-          '?alt=json&kind=photo&max-results=' +
-          settings.maxresults +
-          '&hl=en_US&imgmax=' +
-          settings.imgmax +
-          authKeyStr +
+          '<script src="https://api.allorigins.win/get?url=' +
+          settings.url +
           '&callback=jQuery.fn.googleslides.prepare_' +
           settings.albumid +
-          '&fields=link,entry(link,media:group(media:content,media:description))">' +
-          '</sc' +
+          '"></sc' +
           'ript>';
 
         var prepareFunCallback =
@@ -66,17 +53,54 @@
       }
     },
     prepare: function(data) {
+      var json = data.contents;
       var settings = this.data('googleslidesOptions');
-      var i = data.feed.entry.length;
+
+      var count = json.split('["https://lh3.googleusercontent.com/').length - 1;
+      var entry = [];
+
+      for (var j = 0; j < count; j++) {
+        var metadata = json.split('["https://lh3.googleusercontent.com/')[j + 1];
+
+        if (metadata.startsWith('a/')) {
+          continue;
+        }
+        metadata = metadata.split('\n]')[0];
+        metadata = metadata.split('",');
+
+        var hash = metadata[0];
+        var repeated = entry.some(function(photo) {
+          return photo.url === 'https://lh3.googleusercontent.com/' + hash + '=w1920-h1080-no';
+        });
+
+        if (repeated) {
+          continue;
+        }
+        var widthAndHeight = metadata[1].split(',', 2);
+
+        entry.push({
+          url: 'https://lh3.googleusercontent.com/' + hash + '=w1920-h1080-no',
+          width: widthAndHeight[0],
+          height: widthAndHeight[1],
+          link: settings.url,
+          caption: '',
+        });
+
+        if (entry.length === settings.maxresults) {
+          break;
+        }
+      }
+
+      var i = entry.length;
       var item, url, link, caption, slide, height, width;
       var slides = [];
       while (i--) {
-        item = data.feed.entry[i];
-        url = item.media$group.media$content[0].url;
-        height = item.media$group.media$content[0].height;
-        width = item.media$group.media$content[0].width;
-        link = item.link[1].href;
-        caption = item.media$group.media$description.$t;
+        item = entry[i];
+        url = item.url;
+        height = item.height;
+        width = item.width;
+        link = item.link;
+        caption = item.caption;
         slide = $('<div class="googleslide"></div>');
         var slideInner = slide;
         if (settings.albumlink == true) {
