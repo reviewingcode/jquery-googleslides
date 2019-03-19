@@ -63,13 +63,14 @@
     },
     prepare: function(data) {
       var json = data.contents;
+      var cdn = 'https://lh3.googleusercontent.com/';
       var settings = this.data('googleslidesOptions');
 
-      var count = json.split('["https://lh3.googleusercontent.com/').length - 1;
+      var count = json.split('["' + cdn).length - 1;
       var entry = [];
 
       for (var j = 0; j < count; j++) {
-        var metadata = json.split('["https://lh3.googleusercontent.com/')[j + 1];
+        var metadata = json.split('["' + cdn)[j + 1];
 
         if (metadata.startsWith('a/')) {
           continue;
@@ -84,14 +85,14 @@
         }
 
         var repeated = entry.some(function(photo) {
-          return photo.url === 'https://lh3.googleusercontent.com/' + hash + '=w' + _width;
+          return photo.url === cdn + hash + '=w' + _width;
         });
         if (repeated) {
           continue;
         }
 
         entry.push({
-          url: 'https://lh3.googleusercontent.com/' + hash + '=w' + _width,
+          url: cdn + hash + '=w' + _width,
           width: _width,
           height: 'auto',
           link: settings.url,
