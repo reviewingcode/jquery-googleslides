@@ -76,21 +76,24 @@
         }
         metadata = metadata.split('\n]')[0];
         metadata = metadata.split('",');
-
         var hash = metadata[0];
-        var repeated = entry.some(function(photo) {
-          return photo.url === 'https://lh3.googleusercontent.com/' + hash + '=w1920-h1080-no';
-        });
 
+        var _width = metadata[1].split(',', 1)[0];
+        if (settings.imgmax < _width) {
+          _width = settings.imgmax
+        }
+
+        var repeated = entry.some(function(photo) {
+          return photo.url === 'https://lh3.googleusercontent.com/' + hash + '=w' + _width;
+        });
         if (repeated) {
           continue;
         }
-        var widthAndHeight = metadata[1].split(',', 2);
 
         entry.push({
-          url: 'https://lh3.googleusercontent.com/' + hash + '=w1920-h1080-no',
-          width: widthAndHeight[0],
-          height: widthAndHeight[1],
+          url: 'https://lh3.googleusercontent.com/' + hash + '=w' + _width,
+          width: _width,
+          height: 'auto',
           link: settings.url,
           caption: '',
         });
@@ -127,7 +130,7 @@
           slideInner.append(
             '<div class="captionWrapper"><div class="caption">' + caption + '</div></div>',
           );
-          $('.captionWrapper', slideInner).width(settings.imgmax);
+          $('.captionWrapper', slideInner).width(width);
         }
 
         slides.push(slide);
@@ -141,18 +144,7 @@
         this.append(slides[i]);
       }
 
-      //set height/width of container so that it is just big enough to contain all the images
-      this.height(
-        Math.max.apply(
-          Math,
-          $('.googleslide img', this)
-            .map(function() {
-              return $(this).height();
-            })
-            .get(),
-        ) + 2,
-      );
-
+      //set width of container so that it is just big enough to contain all the images
       this.width(
         Math.max.apply(
           Math,
