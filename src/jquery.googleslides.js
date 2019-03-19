@@ -75,7 +75,6 @@
         if (metadata.startsWith('a/')) {
           continue;
         }
-        metadata = metadata.split('\n]')[0];
         metadata = metadata.split('",');
         var hash = metadata[0];
 
