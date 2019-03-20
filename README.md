@@ -1,15 +1,15 @@
-jQuery googleslides  
-===================
-A jQuery plugin to display your Google Photos.
+# jQuery googleslides
 
-Documentation and Demos
------------------------
- - [http://bradyholt.github.com/jquery-googleslides/](http://bradyholt.github.com/jquery-googleslides/)
+A jQuery plugin to display any ***shared*** Google Photos Album.
 
-Basic Usage
------------
-    	$("#slidesContainer").googleslides({
-           userid:'115528839112598673902', 
-           albumid:'5710317752556741025'
-     });
+## Documentation and Demos
 
+- [https://reviewingcode.github.io/jquery-googleslides/](https://reviewingcode.github.io/jquery-googleslides/)
+
+## Basic Usage
+
+```JavaScript
+$("#slidesContainer").googleslides({
+  albumid: 'gYCTmRk5ft6aCYdm6'
+});
+```
