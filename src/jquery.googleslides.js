@@ -13,7 +13,7 @@
 
 (function($) {
   var defaults = {
-    url: 'https://photos.app.goo.gl/bjwsrJRXt7qkoHP1A',
+    albumid: 'gYCTmRk5ft6aCYdm6',
     imgmax: 460,
     maxresults: 100,
     random: true,
@@ -26,8 +26,6 @@
   var methods = {
     init: function(options) {
       var settings = $.extend({}, defaults, options);
-      var index = settings.url.lastIndexOf('/');
-      settings.albumid = settings.url.substring(index + 1);
       this.data('googleslidesOptions', settings);
 
       if ($('.googleslides[albumid=' + settings.albumid + ']').length > 0) {
@@ -42,7 +40,8 @@
 
         var albumJsonUrl =
           '<script src="https://api.allorigins.win/get?url=' +
-          settings.url +
+          'https://photos.app.goo.gl/' +
+          settings.albumid +
           '&callback=jQuery.fn.googleslides.prepare_' +
           settings.albumid +
           '"></sc' +
@@ -94,7 +93,7 @@
           url: cdn + hash + '=w' + _width,
           width: _width,
           height: 'auto',
-          link: settings.url,
+          link: 'https://photos.app.goo.gl/' + settings.albumid,
           caption: '',
         });
 
