@@ -14,10 +14,9 @@
 (function($) {
   var defaults = {
     albumid: 'gYCTmRk5ft6aCYdm6',
-    imgmax: 460,
+    imgmax: 320,
     maxresults: 100,
-    random: true,
-    caption: true,
+    random: false,
     albumlink: true,
     time: 5000,
     fadespeed: 1000,
@@ -125,7 +124,7 @@
           .width(width)
           .height(height);
 
-        if (settings.caption == true && caption != '') {
+        if (settings.caption && caption != '') {
           slideInner.append(
             '<div class="captionWrapper"><div class="caption">' + caption + '</div></div>',
           );
