@@ -80,7 +80,7 @@
 
         var _width = metadata[1].split(',', 1)[0];
         if (settings.imgmax < _width) {
-          _width = settings.imgmax
+          _width = settings.imgmax;
         }
 
         var repeated = entry.some(function(photo) {
